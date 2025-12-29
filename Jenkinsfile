@@ -9,7 +9,7 @@ pipeline {
 
     stage('Code Checkout') {
       steps {
-        git 'https://github.com/whodeepaksoni/java-app'
+        checkout scm
       }
     }
 
@@ -22,21 +22,6 @@ pipeline {
     stage('Docker Build') {
       steps {
         sh 'docker build -t java-app:latest .'
-      }
-    }
-
-    stage('Docker Push') {
-      steps {
-        withCredentials([usernamePassword(
-          credentialsId: 'dockerhub-creds',
-          usernameVariable: 'whodeepaksoni',
-          passwordVariable: 'Deep@k123'
-        )]) {
-          sh '''
-          echo $PASS | docker login -u $USER --password-stdin
-          docker push java-app:latest
-          '''
-        }
       }
     }
 
